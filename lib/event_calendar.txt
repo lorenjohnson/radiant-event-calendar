@@ -1,0 +1,43 @@
+class EventCalendar < Page
+
+  # register "Event Calendar"
+
+  LOGGER = ActionController::Base.logger
+
+  description %{ 
+    Create a series of calendar pages.   
+  }
+
+  def find_page_by_url(url, live = true, clean = false)
+    self
+  end
+
+  def cache_page?
+    false
+  end
+    
+  # def page_virtual?
+  #   true
+  # end
+
+end
+
+
+
+
+# URI parameters evaluated first, then overwritten by any tag.attribs...
+
+# tag.locals.calendars_segement = params[2] unless params[2].nil?
+# tag.locals.calendars = URI.unescape(params[2]) unless params[2].nil?
+# tag.locals.period = params[3] unless params[3].nil?
+# tag.locals.period_amount = params[4] unless params[4].nil?
+
+# begin
+# if tag.locals.events.count > 0 
+#   tag.expand
+# else
+#   "No events found."
+# end
+# rescue
+#   "Problem in calendar request."
+# end

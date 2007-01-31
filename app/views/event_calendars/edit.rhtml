@@ -1,0 +1,11 @@
+<%= render :partial => 'nav' %>
+
+<h1>Editing calendar</h1>
+
+<%= start_form_tag :action => 'update', :id => @calendar %>
+  <%= render :partial => 'form' %>
+  <%= submit_tag 'Edit' %>
+<%= end_form_tag %>
+
+<%= link_to 'Show', :action => 'show', :id => @calendar %> |
+<%= link_to 'Back', :action => 'list' %>
