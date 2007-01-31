@@ -1,5 +1,5 @@
 class EventCalendarExtension < Radiant::Extension
-  version "0.1"
+   version "0.1"
   description "An event calendar ical subscription systems."
   url "http://www.fn-group.com"
   
