@@ -1,22 +1,20 @@
 <%= error_messages_for 'calendar' %>
 
-<!--[form:calendar]-->
 <p><label for="calendar_name">Name</label><br/>
-<%= text_field 'calendar', 'name'  %></p>
+<%= text_field 'calendar', 'name', :class => "text"  %>
+</p>
+<div>
+<div style="float:left;margin-right:10px;"><label for="calendar_group">Group</label><br/>
+<%= text_field 'calendar', 'group', :class => "text" %></div>
 
+<div style="float:left;"><label for="calendar_slug">Slug</label><br/>
+<%= text_field 'calendar', 'slug', :class => "text" %></div>
+</div>
+
+<br style="clear:both;" />
+
+<p><label for="calendar_ical_url">iCal URL</label><br/>
+<%= text_field 'calendar', 'ical_url', :class => "text", :style => "width:590px; font-size: 10px; background-color:rgb(240,240,240); padding:5px;"  %></p>
 <p><label for="calendar_description">Description</label><br/>
-<%= text_area 'calendar', 'description'  %></p>
-
-<p><label for="calendar_color">Color</label><br/>
-<%= text_field 'calendar', 'color'  %></p>
-
-<p><label for="calendar_ical_url">Ical url</label><br/>
-<%= text_field 'calendar', 'ical_url'  %></p>
-
-<p><label for="calendar_group">Group</label><br/>
-<%= text_field 'calendar', 'group'  %></p>
-
-<p><label for="calendar_slug">Slug</label><br/>
-<%= text_field 'calendar', 'slug'  %></p>
-<!--[eoform:calendar]-->
+<%= text_area 'calendar', 'description', :style => "height:50px; width:600px;"  %></p>
 

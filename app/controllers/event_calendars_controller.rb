@@ -2,7 +2,7 @@ class EventCalendarsController < ApplicationController
   # before_filter :login_required
   # layout "admin"
   
-  def refresh
+  def refresh_all
     # This is the correct line for the agent to run.  
     # Calendar::refresh_all
   	
@@ -11,8 +11,17 @@ class EventCalendarsController < ApplicationController
   	@calendars.each do |calendar|      
   	      calendar.refresh
   	end
+  	flash[:notice] = "Calendar subscription refresh complete."
+  	redirect_to :action => "list"
 	end	
 	
+	def refresh
+    calendar = Calendar.find(params[:id])
+    calendar.refresh
+  	flash[:notice] = calendar.name + " calendar subscription refreshed."
+    redirect_to :action => "list"
+  end
+  
 	def display_events
 	  # days = params[:days].nil? ?  
 	  calendars = params[:calendars].nil? ? Calendar.find(:all).collect { |c| c.name } : params[:calendars].split(",").collect { |s| s.strip }
@@ -21,23 +30,15 @@ class EventCalendarsController < ApplicationController
     @events = Event.find(:all, :conditions => ["name IN (?) AND start_date > ? AND start_date < ?", calendars, @begin_date, @end_date], :include => :calendar, :order => "start_date ASC")    
   end
   
-  # Scaffold generated code from here down
-  
-  def index
-    list
-    render :action => 'list'
-  end
-
-  # GETs should be safe (see http://www.w3.org/2001/tag/doc/whenToUseGet.html)
   verify :method => :post, :only => [ :destroy, :create, :update ],
          :redirect_to => { :action => :list }
 
+   def index
+     redirect_to :action => "list"
+   end
+
   def list
     @calendar_pages, @calendars = paginate :calendars, :per_page => 100
-  end
-
-  def show
-    @calendar = Calendar.find(params[:id])
   end
 
   def new
@@ -47,7 +48,7 @@ class EventCalendarsController < ApplicationController
   def create
     @calendar = Calendar.new(params[:calendar])
     if @calendar.save
-      flash[:notice] = 'Calendar was successfully created.'
+      flash[:notice] = 'iCalendar subscription was successfully created.'
       redirect_to :action => 'list'
     else
       render :action => 'new'
@@ -61,10 +62,10 @@ class EventCalendarsController < ApplicationController
   def update
     @calendar = Calendar.find(params[:id])
     if @calendar.update_attributes(params[:calendar])
-      flash[:notice] = 'Calendar was successfully updated.'
-      redirect_to :action => 'show', :id => @calendar
+      flash[:notice] = 'iCalendar subscription was successfully updated.'
+      redirect_to :action => 'list', :id => @calendar
     else
-      render :action => 'edit'
+      render :action => 'list'
     end
   end
 

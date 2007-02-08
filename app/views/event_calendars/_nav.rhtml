@@ -1,5 +1,52 @@
+<% content_for(:page_css) do -%>
+  #mainNav {
+    margin:15px 0px 10px 0px;
+    float:right;
+    text-align:right;
+  }
+  #mainNav li {
+  	display: inline;
+  	padding: 0px 20px 0px 0px;
+  }
+  #mainNav li a,
+  table a {
+    color:rgb(150,50,50);
+    text-decoration:none;
+  }
+  #mainNav li a:hover,
+  table a:hover {
+    color:rgb(200,50,50);
+    text-decoration:underline;
+  }
+  .text {
+    border: 1px solid #cdc295;
+    padding:2px;
+  }
+  p {
+    margin-bottom: 5px;
+  }
+  table.subscriptionList,
+  table.subscriptionListHeader {
+    width: 100%;
+    min-width: 750px;
+    font-size: 85%;
+  }
+  table.subscriptionListHeader th,
+  table.subscriptionList td {
+    padding:3px;
+  }
+  table.subscriptionList {
+    border-top: solid 1px rgb(200,200,200);
+  } 
+  table.subscriptionListHeader {
+    background-color: rgb(200,50,50);
+    color:rgb(255,255,255);
+  	text-align: left;
+  }
+<% end -%>
 <ul id="mainNav">
     <li><%= link_to "Subscriptions", :controller => 'event_calendars', :action => 'index' %></li>
-    <li><%= link_to "List Events", :controller => 'event_calendars', :action => 'display_events' %></li>
-    <li><%= link_to "Refresh from Subscriptions", :controller => 'event_calendars', :action => 'refresh' %></li>
+    <li><%= link_to "Events List  ", :controller => 'event_calendars', :action => 'display_events' %></li>
+    <li><%= link_to "Refresh All", :controller => 'event_calendars', :action => 'refresh_all' %></li>
+    <li><a href="#">Help!</a></li>
 </ul>

@@ -4,23 +4,24 @@
 
 <table class="subscriptionListHeader">
   <tr>
-	  <th width="100px">Group</th>
-	  <th width="300px">Name</th>
-	  <th width="200px">Slug</th>
+	  <th width="250px">Name (# of events)</th>
+	  <th width="200px">URL (group/slug)</th>
+	  <th width="150px">Last Refresh</th>
+	  <th></th>
   </tr>
 </table>  
 <% for calendar in @calendars %>
 <table class="subscriptionList">
   <tr>
-    <td width="100px"><%=h calendar.group.to_s.capitalize %></td>
-    <td width="300px"><%=h calendar.name %></td>
-    <td width="200px"><%=h calendar.slug %></td>
-    <td width="100px"><%= link_to 'Edit', :action => 'edit', :id => calendar %> | <%= link_to 'Delete', { :action => 'destroy', :id => calendar }, :confirm => 'Are you sure?', :post => true %></td>
+    <td width="250px"><strong><%=h calendar.name %></strong> (<%=h calendar.last_refresh_count %>)</td>
+    <td width="200px"><%=h calendar.group.to_s.downcase %>/<%=h calendar.slug.downcase %></td>
+    <td width="150px"><%=h calendar.last_refresh_date.strftime("%m/%d at %H:%M") %></td>
+    <td style="text-align:right;"><%= link_to 'Refresh', :action => 'refresh', :id => calendar %> | <%= link_to 'Edit', :action => 'edit', :id => calendar %> | <%= link_to 'Delete', { :action => 'destroy', :id => calendar }, :confirm => 'Are you sure?', :post => true %></td>
   </tr>
 </table>
 <% end %>
-
-<%= link_to 'Add a subscription', :action => 'new' %>
+<br />
+<div style="text-align:right;width:100%;"><%= link_to 'Add a subscription', :action => 'new', :style => "" %></div>
 
 <%= link_to 'Previous page', { :page => @calendar_pages.current.previous } if @calendar_pages.current.previous %>
 <%= link_to 'Next page', { :page => @calendar_pages.current.next } if @calendar_pages.current.next %> 

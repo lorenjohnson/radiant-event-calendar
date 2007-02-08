@@ -37,6 +37,7 @@ class Calendar < ActiveRecord::Base
       File.open(ical_filename, "r") { |file|
         cal = Vpim::Icalendar.decode(file).first
         # Calendar.find(:first, :conditions => "name = '" << @cal.properties["x-wr_calname"]  << "'")
+        event_count = 0
         cal.components.each do |parsed_event|
           # Implement a CalendarConfig model to handle total # of months and frequency of event capture 
           parsed_event.occurences.each((Date.today >> 24).to_time) do |o|
@@ -48,9 +49,14 @@ class Calendar < ActiveRecord::Base
             new_event.location = parsed_event.location        
             new_event.calendar = self
             new_event.save
+            event_count = event_count + 1
           end
         end  
-      }
+        self.last_refresh_count = event_count
+        self.last_refresh_date = Time.now
+        self.save
+        logger.info self.group + "/" + self.slug + " - iCalendar subscription refreshed on " + Time.now.strftime("%m/%d at %H:%M")
+      }      
     rescue
       logger.info ical_filename << " -- error."
       return
