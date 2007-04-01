@@ -1,4 +1,9 @@
 <% content_for(:page_css) do -%>
+  table, tr, td {
+  	border-collapse: collapse;
+  	margin: 0px;
+  	padding: 0px;
+  }
   #mainNav {
     margin:15px 0px 10px 0px;
     float:right;
@@ -25,20 +30,19 @@
   p {
     margin-bottom: 5px;
   }
-  table.subscriptionList,
-  table.subscriptionListHeader {
+  table.subscriptionList {
     width: 100%;
     min-width: 750px;
     font-size: 85%;
   }
-  table.subscriptionListHeader th,
+  table.subscriptionList th,
   table.subscriptionList td {
     padding:3px;
   }
   table.subscriptionList {
     border-top: solid 1px rgb(200,200,200);
   } 
-  table.subscriptionListHeader {
+  table.subscriptionList th {
     background-color: rgb(200,50,50);
     color:rgb(255,255,255);
   	text-align: left;
