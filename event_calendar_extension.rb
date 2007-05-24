@@ -14,8 +14,8 @@ class EventCalendarExtension < Radiant::Extension
       Radiant::Config.create(:key => "event_calendar.icals_path", :value => "icals")
     end
     EventCalendarRoot
-    # EventCalendar
-    Page.send :include, EventCalendarTags
+    EventCalendar
+    # Page.send :include, EventCalendarTags
   end
 
   def deactivate

@@ -1,6 +1,4 @@
-class EventCalendarRoot < Page
-
-  LOGGER = ActionController::Base.logger
+class EventCalendarRoot < EventCalendar
 
   description %{ Create a series of calendar pages. }
 
