@@ -4,7 +4,6 @@ class EventCalendarExtension < Radiant::Extension
   url "http://www.fn-group.com"
   
   define_routes do |map|
-    # map.connect 'calendars/:calendar_group/:calendar/:period', :controller => 'site', :action => 'show_page', :url => 'calendars'
     map.connect 'admin/calendars/:action/:id', :controller => 'event_calendars'
   end
   
@@ -13,9 +12,8 @@ class EventCalendarExtension < Radiant::Extension
     unless Radiant::Config.find_by_key("event_calendar.icals_path")
       Radiant::Config.create(:key => "event_calendar.icals_path", :value => "icals")
     end
-    EventCalendarRoot
     EventCalendar
-    # Page.send :include, EventCalendarTags
+    Page.send :include, EventCalendarTags
   end
 
   def deactivate
