@@ -1,4 +1,4 @@
-class EventCalendar < Page
+class EventCalendarRoot < Page
 
   LOGGER = ActionController::Base.logger
 
@@ -13,7 +13,11 @@ class EventCalendar < Page
   end
 
   def find_by_url(url, live = true, clean = false)
-    self
+    if tag.locals.page
+      self
+    else
+      super
+    end
   end
 
 end

@@ -7,9 +7,10 @@ module EventCalendarTags
   desc %{  <r:calendar>...</r:calendar>
            Calendar module root node. }
   tag "calendar" do |tag|
-    tag.locals.calendar_group = tag.attr['group'] || @request.parameters[:url][1] if self.class.to_s == "EventCalendar" || "master"
-    tag.locals.calendars = tag.attr['calendars'] || @request.path_parameters[:url][2] if self.class.to_s == "EventCalendar" || "all"
-    tag.locals.period = tag.attr['period'] || @request.path_parameters[:url][3] if self.class.to_s == "EventCalendar" || "month"
+    @page = tag.attr['page'] 
+    tag.locals.calendar_group = tag.attr['group'] || (@request.parameters[:url][1] if self.class == EventCalendar and page) || "master"
+    tag.locals.calendars = tag.attr['calendars'] || (@request.path_parameters[:url][2] if self.class == EventCalendar and page) || "all"
+    tag.locals.period = tag.attr['period'] || (@request.path_parameters[:url][3] if self.class == EventCalendar and page) || "month"
     tag.locals.calendars = "all" if tag.locals.calendars.nil?
     tag.locals.begin_date = Date.today
 

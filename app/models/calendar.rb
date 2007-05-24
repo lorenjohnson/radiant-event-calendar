@@ -8,7 +8,7 @@ class Calendar < ActiveRecord::Base
   validates_presence_of :ical_url
   validates_presence_of :name
   validates_presence_of :group
-  validates_presence_of :slug
+  # validates_presence_of :slug
 
 	@@calendars_path = "public/assets/calendars/"
 

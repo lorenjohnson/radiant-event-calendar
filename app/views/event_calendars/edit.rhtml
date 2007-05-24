@@ -1,6 +1,7 @@
 <%= render :partial => 'nav' %>
 
 <h2>Editing iCal Subscription</h2>
+
 <h3><%=@calendar.name%> (calendars/<%=@calendar.group.downcase%>/<%=@calendar.slug.downcase%>)</h3>
 
 <%= start_form_tag :action => 'update', :id => @calendar %>

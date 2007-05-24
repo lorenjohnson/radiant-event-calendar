@@ -11,9 +11,9 @@
   </tr>
 <% for calendar in @calendars %>
   <tr>
-    <td width="250px"><strong><%=h calendar.name %></strong> (<%=h calendar.last_refresh_count %>)</td>
-    <td width="200px"><%=h calendar.group.to_s.downcase %>/<%=h calendar.slug.downcase %></td>
-    <td width="150px"><%=h calendar.last_refresh_date.strftime("%m/%d at %H:%M") %></td>
+    <td width="250px"><strong><%=h calendar.name %></strong> (<%=h calendar.last_refresh_count unless calendar.last_refresh_count.blank? %>)</td>
+    <td width="200px"><%=h calendar.group.to_s.downcase %>/<%=h calendar.slug.downcase unless calendar.slug.blank?  %></td>
+    <td width="150px"><%=h calendar.last_refresh_date.strftime("%m/%d at %H:%M") unless calendar.last_refresh_date.blank? %></td>
     <td style="text-align:right;"><%= link_to 'Refresh', :action => 'refresh', :id => calendar %> | <%= link_to 'Edit', :action => 'edit', :id => calendar %> | <%= link_to 'Delete', { :action => 'destroy', :id => calendar }, :confirm => 'Are you sure?', :post => true %></td>
   </tr>
 <% end %>
@@ -22,6 +22,4 @@
 <div style="text-align:right;width:100%;"><%= link_to 'Add a subscription', :action => 'new', :style => "" %></div>
 
 <%= link_to 'Previous page', { :page => @calendar_pages.current.previous } if @calendar_pages.current.previous %>
-<%= link_to 'Next page', { :page => @calendar_pages.current.next } if @calendar_pages.current.next %> 
-
-
+<%= link_to 'Next page', { :page => @calendar_pages.current.next } if @calendar_pages.current.next %>

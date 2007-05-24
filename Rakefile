@@ -1,3 +1,4 @@
+require File.join(File.dirname(__FILE__), "/../../..", 'config', 'boot')
 require 'rake'
 require 'rake/testtask'
 require 'rake/rdoctask'
@@ -19,6 +20,12 @@ Rake::RDocTask.new(:rdoc) do |rdoc|
   rdoc.options << '--line-numbers' << '--inline-source'
   rdoc.rdoc_files.include('README')
   rdoc.rdoc_files.include('lib/**/*.rb')
+end
+
+task :setup do
+  # if @calendar_root = Radiant::Config.find_by_key("event_calendar.icals_path") 
+    mkdir_p "#{RAILS_ROOT}/public/icals"
+  # end
 end
 
 # Load any custom rakefiles for extension

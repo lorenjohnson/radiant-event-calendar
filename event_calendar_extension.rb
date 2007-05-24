@@ -10,11 +10,16 @@ class EventCalendarExtension < Radiant::Extension
   
   def activate
     admin.tabs.add "Event Calendars", "/admin/calendars", :after => "Layouts", :visibility => [:all]
+    unless Radiant::Config.find_by_key("event_calendar.icals_path")
+      Radiant::Config.create(:key => "event_calendar.icals_path", :value => "icals")
+    end
     EventCalendar
     Page.send :include, EventCalendarTags
   end
 
   def deactivate
     admin.tabs.remove "Event Calendars"
+    # Why isn't the model updated here? 
+    # p.destroy if p = Radiant::Config.find_by_key("event_calendar.icals_path")
   end
 end

@@ -74,4 +74,13 @@ class EventCalendarsController < ApplicationController
     redirect_to :action => 'list'
   end
   
+  def config
+    @icals_path = Radiant::Config.find_by_key("event_calendar.icals_path")
+    if request.post?
+      @icals_path.attributes=params[:icals_path]
+      @icals_path.save
+      # redirect_to :action => "list"
+    end
+  end
+  
 end
