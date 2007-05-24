@@ -13,6 +13,7 @@ class EventCalendarExtension < Radiant::Extension
     unless Radiant::Config.find_by_key("event_calendar.icals_path")
       Radiant::Config.create(:key => "event_calendar.icals_path", :value => "icals")
     end
+    EventCalendarRoot
     EventCalendar
     Page.send :include, EventCalendarTags
   end
