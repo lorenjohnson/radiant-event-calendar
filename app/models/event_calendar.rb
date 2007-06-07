@@ -8,7 +8,7 @@ class EventCalendar < Page
     false
   end
 
-  def page_virtual?
+  def virtual?
     true
   end
 

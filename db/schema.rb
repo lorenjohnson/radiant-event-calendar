@@ -9,8 +9,8 @@ ActiveRecord::Schema.define(:version => 6) do
     t.column "description", :text
     t.column "color", :string
     t.column "ical_url", :string
-    t.column "group", :string
-    t.column "slug", :string
+    t.column "category", :string
+    t.column "name", :string
   end
 
   create_table "events", :force => true do |t|

@@ -5,74 +5,84 @@ module EventCalendarTags
   include Radiant::Taggable
   
   desc %{  <r:calendar>...</r:calendar>
-           Calendar module root node. }
-  tag "calendar" do |tag|
-    tag.locals.calendar_group = tag.attr['group'] || (@request.parameters[:url][1] if self.class == EventCalendar) || "master"
-    tag.locals.calendars = tag.attr['calendars'] || (@request.path_parameters[:url][2] if self.class == EventCalendar) || "all"
-    tag.locals.period = tag.attr['period'] || (@request.path_parameters[:url][3] if self.class == EventCalendar) || "month"
-    tag.locals.calendars = "all" if tag.locals.calendars.nil?
-    tag.locals.begin_date = Date.today
+           Calendar module root node. This global tag can be used anywhere on your site or within a Event Calendar page type context. In each 
+           of these two contexts the tag does a slightly different thing. In particular when in the EventCalendar page type context the calendar
+           events are queried based on request parameters following the page with that type.
+           
+           The attributes on the calendar node itself will override any request parameters.
 
-    case tag.locals.period
-      when "week"
-        tag.locals.end_date = tag.locals.begin_date + 7  
-      when "weeks"
-        tag.locals.end_date = tag.locals.begin_date + (7 * tag.locals.period_amount.to_i)      
-      when "month"
-        tag.locals.end_date = tag.locals.begin_date >> 1
-      when "months"
-        tag.locals.end_date = tag.locals.begin_date >> tag.locals.period_amount.to_i        
-      when "year"
-        tag.locals.end_date = tag.locals.begin_date >> 12
-      else
-        tag.locals.end_date = tag.locals.begin_date >> 1
-    end
-     
-    if tag.locals.calendars.downcase == "all" 
-      tag.locals.events = Event.find(:all, :conditions => ["`group` = ? AND start_date BETWEEN ? AND ?", tag.locals.calendar_group, tag.locals.begin_date, tag.locals.end_date], :include => :calendar, :order => "start_date ASC")
+           <r:calendar 
+              [category=""] 
+              [slugs="youth|adult"] 
+              [period="week(month or year)"] 
+              [periods=1]
+              [begin-date="5-5-2007"] 
+              [end-date="7-10-2007"] >
+            <r:calendar />              
+
+            * If a begin-date is set it will use it, if an end-date is set it will be used but ignored if there is a period.name set.
+  }
+  tag "calendar" do |tag|    
+    es = EventSearch.new
+    if self.class == EventCalendar
+      es.category = tag.attr['category'] || @request.parameters[:url][1] || @request.parameters["category"]
+      es.slugs = tag.attr['slugs'] || @request.path_parameters[:url][2] || @request.parameters["slugs"]
+      es.period.begin_date = tag.attr['begin-date'] || @request.parameters["begin-date"]
+      es.period.end_date = tag.attr['end-date'] || @request.parameters["end-date"]
+      es.period.amount = tag.attr['periods'] || @request.parameters["periods"].to_i
+      es.period.name = tag.attr['period'] || @request.path_parameters[:url][3] || @request.parameters["period"]
     else
-      tag.locals.events = Event.find(:all, :conditions => ["`group` = ? AND start_date BETWEEN ? AND ? AND slug = ?", tag.locals.calendar_group, tag.locals.begin_date, tag.locals.end_date, tag.locals.calendars.to_s], :include => :calendar, :order => "start_date ASC")
-    end
-    tag.locals.calendar = Calendar.find(:first, :conditions => ["`group` = ? AND slug = ?", tag.locals.calendar_group, tag.locals.calendars])
+      es.category = tag.attr['category']
+      es.slugs = tag.attr['slugs']
+      es.period.amount = tag.attr['periods']
+      es.period.name = tag.attr['period']
+    end    
+    tag.locals.event_search = es
+    tag.locals.events = es.execute
+    tag.locals.calendars = tag.locals.events.collect { |e| e.calendar }.uniq unless tag.locals.events.nil?
     tag.expand
   end
   
-  tag "calendar:calendar_group" do |tag|
-    tag.locals.calendar_group
+  tag "calendar:category" do |tag|
+    tag.locals.event_search.category
   end
 
-  tag "calendar:name" do |tag|
-    if tag.locals.calendars.downcase == "all"
-      "all"
-    else
-      tag.locals.calendar.name 
-    end 
+  tag "calendar:slugs" do |tag|
+    # unless tag.locals.event_search.slugs.downcase == "all" || tag.locals.event_search.slugs.blank? || tag.locals.event_search.slugs.
+      tag.locals.calendars.collect { |c| c.slug }.join(", ")
+    # else
+    #   "all"
+    # end 
   end
    
-  tag "calendar:period" do |tag|
-    tag.locals.period
-  end
-  
-  tag "calendar:slug" do |tag|
-    if tag.locals.calendars.downcase == "all"
-      "all"
+  tag "calendar:names" do |tag|
+    unless tag.locals.event_search.slugs.downcase == "all"
+      tag.locals.calendars.collect { |c| c.name }.join(", ") unless tag.locals.calendars.nil?
     else
-      tag.locals.calendar.slug
+      "all"
     end
   end
    
+  tag "calendar:period" do |tag|
+    tag.locals.event_search.period
+  end
+
+  tag "calendar:periods" do |tag|
+    tag.locals.event_search.period.amount
+  end
+  
   tag "calendar:description" do |tag|
     tag.locals.event.description
   end
     
   tag "calendar:begin_date" do |tag|
     format = tag.attr['format'].nil? ? "%d %b %y" : tag.attr['format']
-    tag.locals.begin_date.strftime(format)
+    tag.locals.event_search.period.begin_date.strftime(format)
   end
    
   tag "calendar:end_date" do |tag|
     format = tag.attr['format'].nil? ? "%d %b %y" : tag.attr['format']
-    tag.locals.end_date.strftime(format)    
+    tag.locals.event_search.period.end_date.strftime(format)    
   end
   
   tag "calendar:nav" do |tag|
@@ -82,7 +92,7 @@ module EventCalendarTags
   ["week","month","year"].each do |period|
     tag "calendar:nav:#{period}_link" do |tag|
       %{
-        <a href="#{period}" class="#{tag.attr['class']}#{' here' if tag.locals.period == period}">
+        <a href="#{period}" class="#{tag.attr['class']}#{' here' if tag.locals.event_search.period == period}">
           #{tag.expand.blank? ? period : tag.expand }
         </a>
       }
@@ -135,10 +145,6 @@ module EventCalendarTags
    
   tag "calendar:event:each:calendar_description" do |tag|
     tag.locals.event.calendar.description
-  end
-   
-  tag "calendar:event:each:calendar_color" do |tag|
-    tag.locals.event.calendar.color
   end
    
   tag "calendar:event:each:title" do |tag|

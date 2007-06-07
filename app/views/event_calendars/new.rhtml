@@ -1,9 +1,0 @@
-<%= render :partial => 'nav' %>
-
-<h2>New iCal Subscription</h2>
-
-<%= start_form_tag :action => 'create' %>
-  <%= render :partial => 'form' %>
-  <%= submit_tag "Create" %> <%= link_to 'Cancel', :action => 'list' %>
-<%= end_form_tag %>
-
