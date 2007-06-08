@@ -1,3 +1,10 @@
+ svn co http://svn.fn-group.com/radiant_extensions/event_calendar
+ rake db:migrate:extensions
+ create public/icals directory. This is configurable via Radiant::Config["event_calendar.icals_path"], but this is the default value.
+ create new Calendar (you'll need the URL of an iCal subscription to do this)
+ 
+
+
 INSTALLATION 
 
 1. Migrate: rake db:migrate:extensions
