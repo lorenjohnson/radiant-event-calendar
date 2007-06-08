@@ -1,18 +1,20 @@
 INSTALLATION 
 
-1. Checkout extension using svn (you may have already done this): svn co http://svn.fn-group.com/radiant_extensions/event_calendar
+1. Checkout extension to the vendor/extensions directory of your Radiant app using svn (you may have already done this): svn co http://svn.fn-group.com/radiant_extensions/event_calendar
 
-2. Create public/icals directory. This is configurable via Radiant::Config["event_calendar.icals_path"], but this is the default value.
+2. Install VPIM iCal/vCal parsing gem: gem install vpim
 
-3. Migrate extensions: rake db:migrate:extensions
+3. Create public/icals directory. This is configurable via Radiant::Config["event_calendar.icals_path"], but this is the default value.
 
-4. From Admin navigate to your new "Event Calendars" tab and click "Add a Calendar". You'll need your iCal subscription URL at this point.
+4. Migrate extensions: rake db:migrate:extensions
 
-5. You can manually refresh the calendar from the subscription once you've saved by clicking on the Refresh link. You may wish to setup a cron job to do this: script/runner -e production "Calendar::refresh_all"
+5. From Admin navigate to your new "Event Calendars" tab and click "Add a Calendar". You'll need your iCal subscription URL at this point.
+
+6. You can manually refresh the calendar from the subscription once you've saved by clicking on the Refresh link. You may wish to setup a cron job to do this: script/runner -e production "Calendar::refresh_all"
 
 * The handling of all paths below the node where the Event Calendar Page type gets applied are overridden to capture the calendar "category" and "slug". So, if you create a page under Root > Calendar and apply the EventCalendar page type to it, then through admin create a calendar with the category of "master" and a name of "youth" you'll be able to access your calendar at http://yoursite.com/calendar/master/youth. Also, you'll also be able to see events for all calendars with a category of "master" by navigating to http://yoursite.com/calendar/master/all. 
 
-* For add'l documentation please refer to the Radiant tag reference for the <r:calendar /> tags.
+* For add'l documentation please refer to the Radiant tag reference for the <r:calendar /> tag series.
   
   
 IN THE FUTURE
