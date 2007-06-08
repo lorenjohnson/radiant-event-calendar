@@ -1,29 +1,25 @@
- svn co http://svn.fn-group.com/radiant_extensions/event_calendar
- rake db:migrate:extensions
- create public/icals directory. This is configurable via Radiant::Config["event_calendar.icals_path"], but this is the default value.
- create new Calendar (you'll need the URL of an iCal subscription to do this)
- 
-
-
 INSTALLATION 
 
-1. Migrate: rake db:migrate:extensions
-2. From Admin navigate to your new "Event Calendars" tab and click "Add a subscription"
-3. Now in the "New iCal Subscription" form fill-in the name, *category and *name and iCal subscription URL
+1. Checkout extension using svn (you may have already done this): svn co http://svn.fn-group.com/radiant_extensions/event_calendar
 
-* The extension currently overrides the handling of all paths below the node where the Event Calendar Page type gets applied looking for a calendar "group" and then a "name". So if you create a page under Root > Calendar and apply the EventCalendar page type to it, then through admin create a calendar with the group of "master" and a name of "youth" you'll be able to access your calendar at http://yoursite.com/calendar/master/youth. You'll also be able to see events for all calendars with a group of "master" by navigating to http://yoursite.com/calendar/master/all.
+2. Create public/icals directory. This is configurable via Radiant::Config["event_calendar.icals_path"], but this is the default value.
+
+3. Migrate extensions: rake db:migrate:extensions
+
+4. From Admin navigate to your new "Event Calendars" tab and click "Add a Calendar". You'll need your iCal subscription URL at this point.
+
+5. You can manually refresh the calendar from the subscription once you've saved by clicking on the Refresh link. You may wish to setup a cron job to do this: script/runner -e production "Calendar::refresh_all"
+
+* The handling of all paths below the node where the Event Calendar Page type gets applied are overridden to capture the calendar "category" and "slug". So, if you create a page under Root > Calendar and apply the EventCalendar page type to it, then through admin create a calendar with the category of "master" and a name of "youth" you'll be able to access your calendar at http://yoursite.com/calendar/master/youth. Also, you'll also be able to see events for all calendars with a category of "master" by navigating to http://yoursite.com/calendar/master/all. 
+
+* For add'l documentation please refer to the Radiant tag reference for the <r:calendar /> tags.
   
-4. Study the tags and display on page
-5. Setup cron job for "script/runner 'refresh_events.rb'"
-6. Monitor refreshing in Admin panel
+  
+IN THE FUTURE
 
-+ rake task to create "public/assets/calendars/Test.ics"
-+ add Radiant::Config params for ical_paths and event_calendar_root_node
-+ make grouping optional
-+ ical file link tag
-+ tests for: ical calendar receive, parsing, reoccurance parsing confirmation
-+ script/runner task and cron job instructions
-
+* virtual page for single page view for each Event, possibly adding ability to associate an Event with a particular Radiant page also.
+* manual event entry screens. Allow manual events to be mixed in with events from subscriptions.
+* tag to create link to source ical file (for offering subscription link)
 
 
 AN EXAMPLE EVENT-CALENDAR IMPLEMENTATION
@@ -80,61 +76,3 @@ AN EXAMPLE EVENT-CALENDAR IMPLEMENTATION
 </div>
 </r:calendar>
 
-
-
-
-
-
-
-
-
-
-
-class EventCalendar < Page
-
-  # register "Event Calendar"
-
-  LOGGER = ActionController::Base.logger
-
-  description %{ 
-    Create a series of calendar pages.   
-  }
-
-  def find_page_by_url(url, live = true, clean = false)
-    self
-  end
-
-  def cache_page?
-    false
-  end
-    
-  # def page_virtual?
-  #   true
-  # end
-
-end
-
-
-
-
-# URI parameters evaluated first, then overwritten by any tag.attribs...
-
-# tag.locals.calendars_segement = params[2] unless params[2].nil?
-# tag.locals.calendars = URI.unescape(params[2]) unless params[2].nil?
-# tag.locals.period = params[3] unless params[3].nil?
-# tag.locals.period_amount = params[4] unless params[4].nil?
-
-# begin
-# if tag.locals.events.count > 0 
-#   tag.expand
-# else
-#   "No events found."
-# end
-# rescue
-#   "Problem in calendar request."
-# end
-
-
-
-
-The extension currently overrides the handling of all paths below the node where the Event Calendar Page type gets applied looking for a calendar "group" and then a "name". So if you create a page under Root > Calendar and apply the EventCalendar page type to it, then through admin create a calendar with the group of "master" and a name of "youth" you'll be able to access your calendar at http://yoursite.com/calendar/master/youth. You'll also be able to see events for all calendars with a group of "master" by navigating to http://yoursite.com/calendar/master/all.
