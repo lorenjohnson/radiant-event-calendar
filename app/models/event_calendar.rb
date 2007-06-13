@@ -1,8 +1,8 @@
-class EventCalendar < Page
-
-  LOGGER = ActionController::Base.logger
+class EventCalendarPage < Page
 
   description %{ Create a series of calendar pages. }
+
+  LOGGER = ActionController::Base.logger
 
   def cache?
     false
