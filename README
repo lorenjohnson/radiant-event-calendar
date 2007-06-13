@@ -1,3 +1,10 @@
+= Event Calendar (iCal) Extension for Radiant
+
+Created by: Loren Johnson - www.hellovenado.com
+   Version: 0.5
+   Contact: loren@hellovenado.com
+
+
 INSTALLATION 
 
 1. Checkout extension to the vendor/extensions directory of your Radiant app using svn (you may have already done this): svn co http://svn.fn-group.com/radiant_extensions/event_calendar
