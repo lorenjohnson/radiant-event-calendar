@@ -25,7 +25,7 @@ module EventCalendarTags
         }
   tag "calendar" do |tag|    
     es = EventSearch.new
-    if self.class == EventCalendar
+    if self.class == EventCalendarPage
       es.category = tag.attr['category'] || @request.parameters[:url][1] || @request.parameters["category"]
       es.slugs = tag.attr['slugs'] || @request.path_parameters[:url][2] || @request.parameters["slugs"]
       es.period.begin_date = tag.attr['begin-date'] || @request.parameters["begin-date"]
