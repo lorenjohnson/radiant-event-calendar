@@ -1,6 +1,6 @@
 class EventCalendarExtension < Radiant::Extension
-  version "0.5"
-  description "An event calendar extension which draws events from ical subscriptions (Google Calendar, .Mac, etc.)"
+  version "0.6"
+  description "An event calendar extension which draws events from any ical publishers (Google Calendar, .Mac, etc.)"
   url "http://www.hellovenado.com"
 
   EXT_ROOT = '/admin/event_calendar'
@@ -21,8 +21,6 @@ class EventCalendarExtension < Radiant::Extension
   end
 
   def deactivate
-    admin.tabs.remove "Event Calendars"
-    # The model needs to be reloaded or some such, what to do? 
-    # p.destroy if p = Radiant::Config.find_by_key("event_calendar.icals_path")
+    # Please remove this extension from the vendor/extension directory and restart web server to deactivate this extensions
   end
 end

@@ -1,6 +1,6 @@
-    <ul id="mainNav">
-        <li><%= link_to "Subscriptions", :controller => 'event_calendars', :action => 'index' %></li>
-        <li><%= link_to "List Events", :controller => 'event_calendars', :action => 'display_events' %></li>
-        <li><%= link_to "Refresh from Subscriptions", :controller => 'event_calendars', :action => 'refresh' %></li>
-    </ul>
-    <%= yield %>
+<ul id="mainNav">
+    <li><%= link_to "Subscriptions", :controller => 'event_calendars', :action => 'index' %></li>
+    <li><%= link_to "List Events", :controller => 'event_calendars', :action => 'display_events' %></li>
+    <li><%= link_to "Refresh from Subscriptions", :controller => 'event_calendars', :action => 'refresh' %></li>
+</ul>
+<%= yield %>

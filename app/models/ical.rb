@@ -55,10 +55,11 @@ class Ical < ActiveRecord::Base
       end 
 	end
 	
-	def Ical.refresh_all
+	def self.refresh_all
   	find(:all).each do |i|
   	  i.refresh
   	end
   	return true
 	end
+	
 end
