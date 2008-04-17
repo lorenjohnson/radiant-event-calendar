@@ -7,4 +7,12 @@ class Event < ActiveRecord::Base
     end  
     return false
   end
+
+  # def occurances
+  #   occurances = Vpim::Rrule.new(e.start_date, e.ical_rrule)
+  #   occurances.each((Date.today >> 24).to_time) do |o|
+  #     
+  #   end      
+  # end
+  # 
 end

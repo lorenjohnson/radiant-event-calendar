@@ -36,17 +36,26 @@ class Ical < ActiveRecord::Base
         cal.components.each do |parsed_event|
           # 24 below is a setting which is telling VPIM to only parse up to that many # of months for reoccurences,
           # Could be moved to a Radiant::Config['event_calendar.ical_months']   
-          parsed_event.occurences.each((Date.today >> 24).to_time) do |o|
-            new_event = Event.new
-            new_event.start_date = o
-            new_event.end_date = Time.local(o.year, o.month, o.day, parsed_event.dtend.hour, parsed_event.dtend.min)
-            new_event.title = parsed_event.summary
-            new_event.description = parsed_event.description
-            new_event.location = parsed_event.location
-            new_event.calendar = self.calendar
-            new_event.save
-            event_count = event_count + 1
-          end
+
+        # unless (existing_event = Event.find_by_ical_uid(parsed_event.uid)) && (parsed_event.lastmod == existing_event.ical_last_modified)
+          
+        parsed_event.occurences.each((Date.today >> 24).to_time) do |o|
+          new_event = Event.new
+          new_event.ical_last_modified = parsed_event.lastmod
+          new_event.ical_uid = parsed_event.uid
+          # new_event.ical_occurance = 
+          new_event.ical_rrule = parsed_event.propvalue('RRULE')
+  
+          new_event.start_date = o
+          new_event.end_date = Time.local(o.year, o.month, o.day, parsed_event.dtend.hour, parsed_event.dtend.min)
+          new_event.title = parsed_event.summary
+          new_event.description = parsed_event.description
+          new_event.location = parsed_event.location
+          new_event.calendar = self.calendar
+          new_event.save
+          event_count = event_count + 1
+        end
+          
         end  
         self.last_refresh_count = event_count
         self.last_refresh_date = Time.now
@@ -55,11 +64,10 @@ class Ical < ActiveRecord::Base
       end 
 	end
 	
-	def self.refresh_all
+	def Ical.refresh_all
   	find(:all).each do |i|
   	  i.refresh
   	end
   	return true
 	end
-	
 end

@@ -19,6 +19,15 @@ class EventSearch
       events = Event.find(:all, :conditions => ["start_date BETWEEN ? AND ? AND slug IN(?)", @period.begin_date, @period.end_date, slugs], :include => :calendar, :order => "start_date ASC")
     end
     events.find_all { |e| e.calendar.category == @category } unless @category.nil?
+    # events_generated = events
+    # events.each do |e|
+    #   if e.ical_rrule
+    #     occurences = Vpim::Rrule.new(e.start_date, e.ical_rrule)
+    #     occurences.each((Date.today >> 24).to_time) do |o|
+    #       events_generated = Event.new(e.attributes.merge {:id => nil, :start_date => o }
+    #     end
+    #   end
+    # end
     return events
   end
 
