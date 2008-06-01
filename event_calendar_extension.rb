@@ -12,15 +12,18 @@ class EventCalendarExtension < Radiant::Extension
   end
   
   def activate
-    EventCalendarPage
-    admin.tabs.add "Event Calendars", EXT_ROOT + "/calendars", :after => "Snippets", :visibility => [:all]
+    admin.tabs.add "Event Calendars", EXT_ROOT + "/calendars", :after => "Layouts", :visibility => [:all]
     unless Radiant::Config["event_calendar.icals_path"]
       Radiant::Config.create(:key => "event_calendar.icals_path", :value => "icals")
     end
+    EventCalendar
+    EventPage
     Page.send :include, EventCalendarTags
   end
 
   def deactivate
-    # Please remove this extension from the vendor/extension directory and restart web server to deactivate this extensions
+    admin.tabs.remove "Event Calendars"
+    # The model needs to be reloaded or some such, what to do? 
+    # p.destroy if p = Radiant::Config.find_by_key("event_calendar.icals_path")
   end
 end

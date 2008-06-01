@@ -1,7 +1,9 @@
 class EventsController < ApplicationController
   
   def index
-    @events = Event.find(:all)
+    es = EventSearch.new
+    es.period.amount = 6
+    @events = Event.find(:all, :conditions => ["start_date BETWEEN ? AND ?", es.period.begin_date, es.period.end_date], :group => "ical_uid", :order => "start_date ASC")
     respond_to do |format|
       format.html # index.rhtml
       format.xml  { render :xml => @events.to_xml }

@@ -38,6 +38,10 @@ class Ical < ActiveRecord::Base
           # Could be moved to a Radiant::Config['event_calendar.ical_months']   
           parsed_event.occurences.each((Date.today >> 24).to_time) do |o|
             new_event = Event.new
+           	new_event.ical_last_modified = parsed_event.lastmod
+          	new_event.ical_uid = parsed_event.uid
+          	new_event.ical_rrule = parsed_event.propvalue('RRULE')
+          	
             new_event.start_date = o
             new_event.end_date = Time.local(o.year, o.month, o.day, parsed_event.dtend.hour, parsed_event.dtend.min)
             new_event.title = parsed_event.summary
