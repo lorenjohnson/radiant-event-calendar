@@ -9,20 +9,26 @@ module EventCalendarTags
            of these two contexts the tag does a slightly different thing. In particular when in the EventCalendar page type context the calendar
            events are queried based on request parameters following the page with that type.
            
-          The attributes on the calendar node itself will override any request parameters.
+           The attributes on the calendar node itself will override any request parameters.
+           If a begin-date is set it will use it, if an end-date is set it will be used but ignored if there is a period set.
 
-          <r:calendar 
-            [category=""] 
-            [slugs="youth|adult"] 
-            [period="week(month or year)"] 
-            [periods=1]
+           Usage:
+           <pre><code>
+           <r:calendar 
+              [category=""] 
+              [slugs="youth|adult"] 
+              [period="week(month or year)"] 
+              [periods=1]
               [begin-date="5-5-2007"] 
-              [end-date="7-10-2007"] >
-            <r:calendar />              
+              [end-date="7-10-2007"] 
+              [class="all(private or public)"] >
+            <r:calendar />
+            </code></pre>              
 
             * If a begin-date is set it will use it, if an end-date is set it will be used but ignored if there is a period.name set.
-        }
-  tag "calendar" do |tag|    
+            * If no class attribute is passed the default is all
+  }
+   tag "calendar" do |tag|    
     es = EventSearch.new
     if self.class == EventCalendar
       es.category = tag.attr['category'] || @request.parameters[:url][1] || @request.parameters["category"]
@@ -31,11 +37,13 @@ module EventCalendarTags
       es.period.end_date = tag.attr['end-date'] || @request.parameters["end-date"]
       es.period.amount = tag.attr['periods'] || @request.parameters["periods"].to_i
       es.period.name = tag.attr['period'] || @request.path_parameters[:url][3] || @request.parameters["period"]
+      es.event_class = tag.attr['class'] || @request.path_parameters[:url][4] || @request.parameters["class"]
     else
       es.category = tag.attr['category']
       es.slugs = tag.attr['slugs']
       es.period.amount = tag.attr['periods']
       es.period.name = tag.attr['period']
+      es.event_class = tag.attr['class']
     end    
     tag.locals.event_search = es
     tag.locals.events = es.execute

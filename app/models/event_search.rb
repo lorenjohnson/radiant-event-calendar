@@ -1,14 +1,21 @@
 class EventSearch
-  attr_accessor :category, :calendars, :slugs, :period, :event_id
+  attr_accessor :category, :calendars, :slugs, :period, :event_id, :event_class
 
   def initialize
     @period = Period.new
     @slugs = ["all"]
     @event_id = nil
+    @event_class = 'all'
   end
 
   def event_id=(new_event_id)
     @event_id = new_event_id
+  end
+
+  def event_class=(event_class)
+    unless event_class.blank?
+      @event_class = event_class.downcase
+    end
   end
 
   def slugs=(new_slugs)
@@ -25,19 +32,18 @@ class EventSearch
     end
     
     # Loren: Based on my testing with script/console, I don't believe that the events.find_all method 
-	# will modify the events collection.
-	# This was: 
-	# events.find_all { |e| e.calendar.category == @category } unless @category.nil?
-	# return events
-	
-	  events = events.find_all { |e| e.calendar.category == @category } unless @category.nil?
-
-	# Filter out the class of events if an event class of public or private is passed.
-	  events = events.find_all { |e| e.ical_access_class.downcase == @event_class } unless @event_class == 'all'
-
-	# If an event_id was passed return only one event.  If this is a reoccurring event, select the first one
-	# in the future.
- 	  events = events.detect { |e| e.ical_uid == @event_id } unless @event_id.nil?
+    # will modify the events collection.
+    # This was: 
+    # events.find_all { |e| e.calendar.category == @category } unless @category.nil?
+    # return events
+    events = events.find_all { |e| e.calendar.category.downcase == @category.downcase } unless @category.nil?
+    
+    # Filter out the class of events if an event class of public or private is passed.
+    events = events.find_all { |e| e.ical_access_class.downcase == @event_class } unless @event_class == 'all'
+    
+    # If an event_id was passed return only one event.  If this is a reoccurring event, select the first one
+    # in the future.
+    events = events.detect { |e| e.ical_uid == @event_id } unless @event_id.nil?
 
     return events
   end

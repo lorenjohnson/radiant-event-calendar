@@ -120,6 +120,8 @@ So, if you create a page under Home > Calendar and apply the EventCalendar page 
 "master" and a name of "youth" you'll be able to access your calendar at http://yoursite.com/calendar/master/youth. Also, you'll also be able to see 
 events for all calendars with a category of "master" by navigating to http://yoursite.com/calendar/master/all. 
 
+In addition, you can also select the class of events. Public, Private or All.  All is the class by default.  You can specify only the public events by adding to the URL, http://yoursite.com/calendar/master/youth/public.
+
 * For add'l documentation please refer to the Radiant tag reference (the "Available tags" link within Page edit) for the <r:calendar /> tag series, 
 you'll only see the Calendar tag documentation available when editing a page that has already been saved as the EventCalendar Page Type.
 
