@@ -7,4 +7,5 @@ class Event < ActiveRecord::Base
     end  
     return false
   end
+  alias allday? allday
 end
