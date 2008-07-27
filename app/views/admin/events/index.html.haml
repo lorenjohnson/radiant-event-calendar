@@ -19,7 +19,7 @@
       %td{:width => "200px"}
         = event.calendar.name
       %td{:style => "text-align:right;"}
-        = link_to('Delete', admin_event_path(event), :confirm => 'Are you sure?', :method => :delete) unless event.ical_linked?
+        = link_to(image_tag("/images/admin/remove.png", :alt => "remove event"), admin_event_path(event), :confirm => 'Are you sure?', :method => :delete) unless event.ical_linked?
 %br
 %div{:style => "text-align:right;width:100%;"}
   = link_to 'Add an event', new_admin_event_url

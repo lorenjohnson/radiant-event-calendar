@@ -24,7 +24,7 @@
       %td{:style => "text-align:right;"}
         = link_to 'Refresh', refresh_admin_ical_url(ical), :method => :put 
         |
-        = link_to 'Delete', admin_ical_path(ical), :confirm => 'Are you sure?', :method => :delete
+        = link_to image_tag("/images/admin/remove.png", :alt => "remove ical"), admin_ical_path(ical), :confirm => 'Are you sure?', :method => :delete
 %br
 %div{:style => "text-align:right;width:100%;"}
   = link_to "Refresh All", refresh_all_admin_icals_path, :method => :put

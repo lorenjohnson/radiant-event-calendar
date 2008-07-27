@@ -21,7 +21,7 @@
         = calendar.category.to_s.downcase + "/"
         = calendar.name.downcase unless calendar.name.blank?
       %td{:style => "text-align:right;"}
-        = link_to 'Delete', admin_calendar_path(calendar), :confirm => 'Are you sure?', :method => :delete
+        = link_to image_tag("/images/admin/remove.png", :alt => "remove calendar"), admin_calendar_path(calendar), :confirm => 'Are you sure?', :method => :delete
 %br
 %div{:style => "text-align:right;width:100%;"}
   = link_to 'Add a calendar', new_admin_calendar_url
