@@ -7,6 +7,8 @@
       Calendar
     %th{:width => "200px"}
       iCal URL
+    %th{:width => "150px"}
+      Last Refresh
     %th
   - for ical in @icals
     %tr.node.level-0
@@ -17,8 +19,15 @@
             %span.title= ical.calendar.name
       %td{:width => "200px"}
         = ical.ical_url
+      %td{:width => "150px"}
+        = ical.last_refresh_date.strftime("%m/%d at %H:%M") unless ical.last_refresh_date.blank?
       %td{:style => "text-align:right;"}
+        = link_to 'Refresh', refresh_admin_ical_url(ical), :method => :put 
+        |
         = link_to 'Delete', admin_ical_path(ical), :confirm => 'Are you sure?', :method => :delete
 %br
 %div{:style => "text-align:right;width:100%;"}
-  = link_to 'Add an iCal subscription', new_admin_ical_url
+  = link_to "Refresh All", refresh_all_admin_icals_path, :method => :put
+  | 
+  = link_to 'Add an iCal subscription', new_admin_ical_url 
+  

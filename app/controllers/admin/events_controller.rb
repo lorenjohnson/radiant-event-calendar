@@ -3,7 +3,7 @@ class Admin::EventsController < ApplicationController
   def index
     es = EventSearch.new
     es.period.amount = 6
-    @events = Event.find(:all)
+    @events = Event.find(:all, :conditions => {:ical_uid => ""})
     respond_to do |format|
       format.html
       format.xml  { render :xml => @events.to_xml }

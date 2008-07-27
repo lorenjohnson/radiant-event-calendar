@@ -1,4 +1,5 @@
 = render :partial => 'admin/shared/nav'
-%h2 Editing Calendar
-%h3= "#{@calendar.name} (calendars/#{@calendar.category.downcase}/#{@calendar.name.downcase})"
+%h3 
+  Editing Calendar:
+  = "#{@calendar.name} (calendars/#{@calendar.category.downcase}/#{@calendar.name.downcase})"
 = render :partial => "form", :locals => { :calendar => @calendar }

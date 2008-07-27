@@ -66,15 +66,11 @@ class Admin::IcalsController < ApplicationController
   def update
     @ical = Ical.find(params[:id])
     @status = "test"
-    respond_to do |format|
-      if @ical.update_attributes(params[:ical])
-        flash[:notice] = 'Ical was successfully updated.'
-        format.html { redirect_to admin_icals_path  }
-        format.xml { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @ical.errors.to_xml }
-      end
+    if @ical.update_attributes(params[:ical])
+      flash[:notice] = 'Ical was successfully updated.'
+      redirect_to admin_icals_path
+    else
+      render :action => "edit"
     end
   end
 

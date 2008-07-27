@@ -42,17 +42,13 @@ class Admin::CalendarsController < ApplicationController
 
   def update
     @calendar = Calendar.find(params[:id])
-    @ical = @calendar.ical
-    respond_to do |format|
-      if @calendar.update_attributes(params[:calendar]) && @ical.update_attributes(params[:ical])
-        flash[:notice] = 'Calendar was successfully updated.'
-        format.html { redirect_to admin_calendars_path }
-        format.xml { head :ok }
-      else
-        # flash[:notice]
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @calendar.errors.to_xml }
-      end
+    # @ical = @calendar.ical
+    if @calendar.update_attributes(params[:calendar]) 
+      # && @ical.update_attributes(params[:ical])
+      flash[:notice] = 'Calendar was successfully updated.'
+      redirect_to admin_calendars_path 
+    else
+      render :action => "edit"
     end
   end
 
