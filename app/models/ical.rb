@@ -7,11 +7,11 @@ class Ical < ActiveRecord::Base
   belongs_to :calendar
   validates_presence_of :ical_url
 
-  @@calendars_path = Radiant::Config["event_calendar.icals_path"]
+  @@admin_calendars_path = Radiant::Config["event_calendar.icals_path"]
   
 	# Download and save the .ics calendar file, parse and save events to database
 	def refresh
-    ical_filename = RAILS_ROOT + "/public/" + @@calendars_path + "/" + self.calendar.slug + ".ics"
+    ical_filename = RAILS_ROOT + "/public/" + @@admin_calendars_path + "/" + self.calendar.slug + ".ics"
 
     # Retrieve calendar specified by URL and Name attributes
     begin

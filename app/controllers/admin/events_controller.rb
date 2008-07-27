@@ -1,11 +1,11 @@
-class EventsController < ApplicationController
+class Admin::EventsController < ApplicationController
   
   def index
     es = EventSearch.new
     es.period.amount = 6
-    @events = Event.find(:all, :conditions => ["start_date BETWEEN ? AND ?", es.period.begin_date, es.period.end_date], :group => "ical_uid", :order => "start_date ASC")
+    @events = Event.find(:all)
     respond_to do |format|
-      format.html # index.rhtml
+      format.html
       format.xml  { render :xml => @events.to_xml }
     end
   end
@@ -13,13 +13,13 @@ class EventsController < ApplicationController
   def show
     @event = Event.find(params[:id])
     respond_to do |format|
-      format.html # show.rhtml
+      format.html
       format.xml  { render :xml => @event.to_xml }
     end
   end
 
   def new
-    @event = Event.new(:person_id=>params[:person_id])
+    @event = Event.new
   end
 
   def edit
@@ -31,12 +31,12 @@ class EventsController < ApplicationController
     respond_to do |format|
       if @event.save
         flash[:notice] = 'Event was successfully created.'
-        format.html { redirect_to event_url(@event) }
+        format.html { redirect_to admin_events_path }
         format.xml  { head :created }
         # , :location => event_url(@event) 
         format.js { @status = flash[:notice] }
       else
-        format.html { redirect_to new_event_path() }
+        format.html { render :action => "new" }
         format.xml  { render :xml => @event.errors.to_xml }
       end
     end
@@ -48,7 +48,7 @@ class EventsController < ApplicationController
     respond_to do |format|
       if @event.update_attributes(params[:event])
         flash[:notice] = 'Event was successfully updated.'
-        format.html { redirect_to event_url(@event) }
+        format.html { redirect_to admin_events_path }
         format.xml { head :ok }
       else
         format.html { render :action => "edit" }

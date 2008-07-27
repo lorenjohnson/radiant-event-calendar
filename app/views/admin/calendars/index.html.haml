@@ -1,0 +1,33 @@
+= render :partial => 'admin/shared/nav'
+%h1 Calendars
+
+%table{:class => "index"}
+  %tr
+    %th{:width => "250px"}
+      Name (# of events)
+    %th{:width => "200px"}
+      URL (category/slug)
+    %th{:width => "150px"}
+      Last Refresh
+    %th
+  - for calendar in @calendars
+    %tr.node.level-0
+      %td{:class => "page", :style => "padding-left: 20px"}
+        %a{:href => edit_admin_calendar_path(calendar)}
+          %span.w1
+            %img{:src => "/images/admin/page.png", :class => "icon", :alt => "page-icon"}
+            %span.title
+              = calendar.name
+            = "(#{calendar.ical.last_refresh_count})" unless calendar.ical.last_refresh_count.blank?
+      %td{:width => "200px"}
+        = calendar.category.to_s.downcase + "/"
+        = calendar.name.downcase unless calendar.name.blank?
+      %td{:width => "150px"}
+        = calendar.ical.last_refresh_date.strftime("%m/%d at %H:%M") unless calendar.ical.last_refresh_date.blank?
+      %td{:style => "text-align:right;"}
+        = link_to 'Refresh', refresh_admin_ical_url(calendar.ical.id), :method => :put 
+        |
+        = link_to 'Delete', admin_calendar_path(calendar), :confirm => 'Are you sure?', :method => :delete
+%br
+%div{:style => "text-align:right;width:100%;"}
+  = link_to 'Add a calendar', new_admin_calendar_url

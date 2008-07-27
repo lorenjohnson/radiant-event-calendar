@@ -1,4 +1,4 @@
-class IcalsController < ApplicationController
+class Admin::IcalsController < ApplicationController
 
   def refresh_all
     # This is the correct line for the agent to run.  
@@ -10,7 +10,7 @@ class IcalsController < ApplicationController
       ical.refresh
     end
     flash[:notice] = "iCal subscription refresh complete."
-    redirect_to calendars_path
+    redirect_to admin_icals_path
   end 
   
   def refresh
@@ -20,7 +20,7 @@ class IcalsController < ApplicationController
     else
       flash[:notice] = "Error parsing " + ical.calendar.name + " calendar from iCal subscription, check the iCal URL."
     end
-    redirect_to calendars_path
+    redirect_to admin_icals_path
   end
   
   def index
@@ -40,7 +40,7 @@ class IcalsController < ApplicationController
   end
 
   def new
-    @ical = Ical.new(:person_id=>params[:person_id])
+    @ical = Ical.new
   end
 
   def edit
@@ -52,12 +52,12 @@ class IcalsController < ApplicationController
     respond_to do |format|
       if @ical.save
         flash[:notice] = 'Ical was successfully created.'
-        format.html { redirect_to ical_url(@ical) }
+        format.html { redirect_to admin_icals_path }
         format.xml  { head :created }
         # , :location => ical_url(@ical) 
         format.js { @status = flash[:notice] }
       else
-        format.html { redirect_to new_ical_path() }
+        format.html { render :action => "new" }
         format.xml  { render :xml => @ical.errors.to_xml }
       end
     end
@@ -69,7 +69,7 @@ class IcalsController < ApplicationController
     respond_to do |format|
       if @ical.update_attributes(params[:ical])
         flash[:notice] = 'Ical was successfully updated.'
-        format.html { redirect_to ical_url(@ical) }
+        format.html { redirect_to admin_icals_path  }
         format.xml { head :ok }
       else
         format.html { render :action => "edit" }
@@ -82,7 +82,7 @@ class IcalsController < ApplicationController
     @ical = Ical.find(params[:id])
     @ical.destroy
     respond_to do |format|
-      format.html { redirect_to icals_url }
+      format.html { redirect_to admin_icals_url }
       format.xml  { head :ok }
     end
   end

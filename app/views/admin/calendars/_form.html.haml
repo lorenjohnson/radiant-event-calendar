@@ -1,0 +1,23 @@
+- form_for @calendar, :url => admin_calendar_path(@calendar) do |f|
+  = error_messages_for :calendar
+  = error_messages_for :ical
+  %p
+    %label{:for => "calendar_name"} Name
+    %br
+  = f.text_field :name, :class => "text"
+  %div
+    %div{:style => "float:left;margin-right:10px;"}
+      %label{:for => "calendar_group"} Category
+      %br
+      = f.text_field :category, :class => "text"
+    %div{:style => "float:left;"}
+      %label{:for => "calendar_name"} Slug
+      %br
+      = f.text_field :slug, :class => "text"
+  %br{:style => "clear:both"}
+  = render :partial => 'admin/icals/edit', :locals => { :ical => @calendar.ical }
+  %p
+    %label{:for => "calendar_description"} Description
+    %br
+    = text_area 'calendar', 'description', :style => "height:50px; width:600px;"
+  = f.submit 'Save'

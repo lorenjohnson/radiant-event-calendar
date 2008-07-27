@@ -1,4 +1,4 @@
-class CalendarsController < ApplicationController
+class Admin::CalendarsController < ApplicationController
 
   def index
     @calendars = Calendar.find(:all)
@@ -31,7 +31,7 @@ class CalendarsController < ApplicationController
     respond_to do |format|
       if @calendar.save
         flash[:notice] = 'Calendar was successfully created.'
-        format.html { redirect_to calendars_path }
+        format.html { redirect_to admin_calendars_path }
         format.xml  { head :created }
       else
         format.html { render :action => "new" }
@@ -46,7 +46,7 @@ class CalendarsController < ApplicationController
     respond_to do |format|
       if @calendar.update_attributes(params[:calendar]) && @ical.update_attributes(params[:ical])
         flash[:notice] = 'Calendar was successfully updated.'
-        format.html { redirect_to calendars_path }
+        format.html { redirect_to admin_calendars_path }
         format.xml { head :ok }
       else
         # flash[:notice]
@@ -60,7 +60,7 @@ class CalendarsController < ApplicationController
     @calendar = Calendar.find(params[:id])
     @calendar.destroy
     respond_to do |format|
-      format.html { redirect_to calendars_path }
+      format.html { redirect_to admin_calendars_path }
       format.xml  { head :ok }
     end
   end

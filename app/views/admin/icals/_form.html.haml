@@ -1,0 +1,11 @@
+- form_for @ical, :url => admin_ical_path(@ical) do |f|
+  = error_messages_for :ical
+  %p
+    = f.label :calendar_id, "Which Calendar will the iCal events populate to?"
+    = f.select :calendar_id, calendars_for_select
+  %p
+    = f.label :ical_url
+    = f.text_field :ical_url
+  = f.submit "Create"
+  = link_to 'Cancel', admin_icals_path
+

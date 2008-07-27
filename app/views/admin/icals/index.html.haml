@@ -1,0 +1,24 @@
+= render :partial => 'admin/shared/nav'
+%h1 iCal Subscriptions
+
+%table{:class => "index"}
+  %tr
+    %th{:width => "250px"}
+      Calendar
+    %th{:width => "200px"}
+      iCal URL
+    %th
+  - for ical in @icals
+    %tr.node.level-0
+      %td{:class => "page", :style => "padding-left: 20px"}
+        %a{:href => edit_admin_ical_path(ical)}
+          %span.w1
+            %img{:src => "/images/admin/page.png", :class => "icon", :alt => "page-icon"}
+            %span.title= ical.calendar.name
+      %td{:width => "200px"}
+        = ical.ical_url
+      %td{:style => "text-align:right;"}
+        = link_to 'Delete', admin_ical_path(ical), :confirm => 'Are you sure?', :method => :delete
+%br
+%div{:style => "text-align:right;width:100%;"}
+  = link_to 'Add an iCal subscription', new_admin_ical_url

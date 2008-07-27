@@ -1,0 +1,24 @@
+= render :partial => 'admin/shared/nav'
+%h1 Events
+
+%table{:class => "index"}
+  %tr
+    %th{:width => "250px"}
+      Title
+    %th{:width => "200px"}
+      Calendar
+    %th
+  - for event in @events
+    %tr.node.level-0
+      %td{:class => "page", :style => "padding-left: 20px"}
+        %a{:href => edit_admin_event_path(event)}
+          %span.w1
+            %img{:src => "/images/admin/page.png", :class => "icon", :alt => "page-icon"}
+            %span.title= event.title
+      %td{:width => "200px"}
+        = event.calendar.name
+      %td{:style => "text-align:right;"}
+        = link_to 'Delete', admin_event_path(event), :confirm => 'Are you sure?', :method => :delete
+%br
+%div{:style => "text-align:right;width:100%;"}
+  = link_to 'Add an event', new_admin_event_url

@@ -1,8 +1,8 @@
 <% content_for(:page_css) do -%>
   table, tr, td {
-  	border-collapse: collapse;
-  	margin: 0px;
-  	padding: 0px;
+    border-collapse: collapse;
+    margin: 0px;
+    padding: 0px;
   }
   #mainNav {
     margin:15px 0px 10px 0px;
@@ -10,8 +10,8 @@
     text-align:right;
   }
   #mainNav li {
-  	display: inline;
-  	padding: 0px 20px 0px 0px;
+    display: inline;
+    padding: 0px 20px 0px 0px;
   }
   #mainNav li a,
   table a {
@@ -42,12 +42,13 @@
   table.subscriptionList th {
     background-color: rgb(200,50,50);
     color:rgb(255,255,255);
-  	text-align: left;
+    text-align: left;
   }
 <% end -%>
 <ul id="mainNav">
-    <li><%= link_to "Calendars", calendars_path %></li>
-    <li><%= link_to "Events List", events_path %></li>
-    <li><%= link_to "Refresh All", refresh_all_icals_path, :method => :put %></li>
-    <li><%= link_to "Help!", help_calendars_path %></li>
+    <li><%= link_to "Calendars", admin_calendars_path %></li>
+    <li><%= link_to "Events", admin_events_path %></li>
+    <li><%= link_to "iCal Subscriptions", admin_icals_path %></li>
+    <li><%= link_to "Refresh All", refresh_all_admin_icals_path, :method => :put %></li>
+    <li><%= link_to "Help!", help_admin_calendars_path %></li>
 </ul>
